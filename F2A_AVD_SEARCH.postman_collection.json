@@ -1,0 +1,212 @@
+{
+	"variables": [],
+	"info": {
+		"name": "F2A_AVD_SEARCH",
+		"_postman_id": "4a771268-2719-45ca-1576-b13c91823456",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "INIT_ADVANCE_SEARCH",
+			"request": {
+				"url": "http://localhost:8081/avdSearch/init/test",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "INIT_ADVANCE_SEARCH_TEST",
+			"request": {
+				"url": "http://localhost:8082/avdSearchTest/init/test",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ALL_USERS",
+			"request": {
+				"url": "http://localhost:8082/avdSearchTest/users",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "USER_BY_ID",
+			"request": {
+				"url": "http://localhost:8082/avdSearchTest/users/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "USER_AVD_SEARCH",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8082/avdSearchTest/users/avdSearch/pageSize/10/page/0?sortDir=ASC&sortParam=id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"avdSearchTest",
+						"users",
+						"avdSearch",
+						"pageSize",
+						"10",
+						"page",
+						"0"
+					],
+					"query": [
+						{
+							"key": "sortDir",
+							"value": "ASC",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "sortParam",
+							"value": "id",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\n\t\"field\": \"ages\",\n\t\"operatorCode\": \"BETWEEN\",\n\t\"value\": [20, 50]\n}, {\n\t\"field\": \"projects.mainCostCenter.code\",\n\t\"operatorCode\": \"EQUALS\",\n\t\"value\": \"IT\"\n}]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ALL_AVD_SEARCH",
+			"request": {
+				"url": "http://localhost:8081/avdSearch/advancedSearch",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "AVD_SEARCH_BY_ID",
+			"request": {
+				"url": "http://localhost:8081/avdSearch/advancedSearch/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "AVD_SEARCH_BY_COMPANY_AND_CODE",
+			"request": {
+				"url": "http://localhost:8081/avdSearch/advancedSearch/byCompany/C001/andCode/S001",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ALL_SGD_SEARCH",
+			"request": {
+				"url": "http://localhost:8081/avdSearch/suggestedSearch/byAdvancedSearch/2",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "SGD_SEARCH_BY_ID",
+			"request": {
+				"url": "http://localhost:8081/avdSearch/suggestedSearch/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE_SGD_SEARCH",
+			"request": {
+				"url": "http://localhost:8081/avdSearch/suggestedSearch",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"advancedSearchId\": 1,\n\t\"code\": \"R001_S001\",\n\t\"description\": \"Suggested Search Test for AvdSearch 1 (User IT on project, not IT and in current year)\",\n\t\"values\": [{\n\t\t\"field\": \"projects.mainCostCenter.code\",\n\t\t\"operatorCode\": \"NOT_EQUALS\",\n\t\t\"value\": \"IT\"\n\t}, {\n\t\t\"field\": \"costCenter.code\",\n\t\t\"operatorCode\": \"EQUALS\",\n\t\t\"value\": \"IT\"\n\t}, {\n\t\t\"field\": \"projects.startDate\",\n\t\t\"operatorCode\": \"BETWEEN\",\n\t\t\"value\": [\"2018-01-01T00:00:00.000Z\", \"2018-12-31T23:59:59.999Z\"]\n\t}]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE_SGD_SEARCH",
+			"request": {
+				"url": "http://localhost:8081/avdSearch/suggestedSearch/1",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "MODIFY_SGD_SEARCH",
+			"request": {
+				"url": "http://localhost:8081/avdSearch/suggestedSearch",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n\t\"advancedSearchId\": 1,\n\t\"code\": \"R001_S001\",\n\t\"description\": \"Suggested Search Test for AvdSearch 1 (User IT on project HR or IT in current year)\",\n\t\"values\": [{\n\t\t\"field\": \"projects.mainCostCenter.code\",\n\t\t\"operatorCode\": \"IN\",\n\t\t\"value\": [\"HR\", \"IT\"]\n\t}, {\n\t\t\"field\": \"costCenter.code\",\n\t\t\"operatorCode\": \"EQUALS\",\n\t\t\"value\": \"IT\"\n\t}, {\n\t\t\"field\": \"projects.startDate\",\n\t\t\"operatorCode\": \"BETWEEN\",\n\t\t\"value\": [\"2018-01-01T00:00:00.000Z\", \"2018-12-31T23:59:59.999Z\"]\n\t}]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

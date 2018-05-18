@@ -1,0 +1,1 @@
+docker run --rm --name=avdSearchTestMariaDB -v ./avdSearchTest_dbData:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=t35tpwd! -e MYSQL_ROOT_HOST=% -e MYSQL_DATABASE=avdSearchTest -e MYSQL_USER=avdSearchTest -e MYSQL_PASSWORD=avdSearchTestPwd -p 3307:3306 -d mariadb:10.0
