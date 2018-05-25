@@ -2,7 +2,9 @@ package it.mm.advancedSearch.core.customRepositories;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -53,8 +55,9 @@ public class AdvancedSearchRepositoryImpl<T, ID extends Serializable> extends Si
 			public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 				query.distinct(true);
 				List<Predicate> queryPredicates = new ArrayList<>();
+				Map<String, Join<Object, Object>> joins = new HashMap<>();
 				predicates.forEach(predicate -> {
-					Expression<String> path = getPath(root, predicate.getField());
+					Expression<String> path = getPath(root, predicate.getField(), joins);
 					Operator operator = Operator.valueOf(predicate.getOperatorCode());
 					operator.getHandler().handle(queryPredicates, criteriaBuilder, path, predicate.getValue());
 				});
@@ -64,17 +67,43 @@ public class AdvancedSearchRepositoryImpl<T, ID extends Serializable> extends Si
 		};
 	}
 
-	private Expression<String> getPath(Root<T> root, String path) {
+	private Expression<String> getPath(Root<T> root, String path, Map<String, Join<Object, Object>> joins) {
 		String[] paths = path.split("\\.");
 		if (paths.length > 1) {
-			Join<Object, Object> rootx = root.join(paths[0]);
-			for (int i = 1; i < paths.length - 1; i++) {
-				rootx = rootx.join(paths[i]);
-			}
-			return rootx.get(paths[paths.length - 1]);
+			Join<Object, Object> join = findOrCreateJoin(root, paths, joins);
+			return join.get(paths[paths.length - 1]);
 		} else {
 			return root.get(path);
 		}
+	}
+
+	private Join<Object, Object> findOrCreateJoin(Root<T> root, String[] paths, Map<String, Join<Object, Object>> joins) {
+		String path = getPath(paths, 0);
+		Join<Object, Object> result = joins.get(path);
+		if (result == null) {
+			result = root.join(paths[0]);
+			joins.put(path, result);
+		}
+		for (int i = 1; i < paths.length - 1; i++) {
+			path = getPath(paths, i);
+			Join<Object, Object> nextResult = joins.get(path);
+			if (nextResult == null) {
+				nextResult = result.join(paths[i]);
+				joins.put(path, nextResult);
+			}
+			result = nextResult;
+		}
+		return result;
+	}
+	
+	private String getPath(String[] paths, int index) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i <= index; i++) {
+			sb.append(paths[i])
+				.append(".");
+		}
+		sb.deleteCharAt(sb.lastIndexOf("."));
+		return sb.toString();
 	}
 
 }
